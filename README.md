@@ -37,6 +37,26 @@ Below is an extensive, 20+ topic breakdown of everything you need to know about 
 20. [Security & Privacy Measures](#20-security--privacy-measures)
 21. [Contributing Guidelines](#21-contributing-guidelines)
 22. [License & Acknowledgements](#22-license--acknowledgements)
+23. [AI Safety & Alignment (Guardrails)](#23-ai-safety--alignment-guardrails)
+24. [Continuous Learning & Self-Improvement](#24-continuous-learning--self-improvement)
+25. [Data Ingestion Pipelines](#25-data-ingestion-pipelines)
+26. [Supported LLM Models](#26-supported-llm-models)
+27. [Cross-Platform Compatibility](#27-cross-platform-compatibility)
+28. [Docker & Containerization](#28-docker--containerization)
+29. [Voice Cloning & Custom Persona](#29-voice-cloning--custom-persona)
+30. [Emotion & Sentiment Analysis](#30-emotion--sentiment-analysis)
+31. [Automated Error Recovery & Self-Healing](#31-automated-error-recovery--self-healing)
+32. [Rate Limiting & Throttling](#32-rate-limiting--throttling)
+33. [Advanced Vector Databases](#33-advanced-vector-databases)
+34. [Telemetry & Analytics Logging](#34-telemetry--analytics-logging)
+35. [Real-time WebSocket Events](#35-real-time-websocket-events)
+36. [Offline Mode & Local Execution](#36-offline-mode--local-execution)
+37. [CLI & Headless Usage](#37-cli--headless-usage)
+38. [Hardware Acceleration (CUDA / MPS)](#38-hardware-acceleration-cuda--mps)
+39. [Plugins & Extensions Ecosystem](#39-plugins--extensions-ecosystem)
+40. [Notification & Alert System](#40-notification--alert-system)
+41. [Localization & Multi-language Support](#41-localization--multi-language-support)
+42. [Frequently Asked Questions (FAQ)](#42-frequently-asked-questions-faq)
 
 ---
 
@@ -128,6 +148,68 @@ We welcome contributions! Fork the repository, create a feature branch, and subm
 
 ### 22. License & Acknowledgements
 Licensed under the MIT License. A special thanks to all open-source libraries that make the magic of **V** possible!
+
+### 23. AI Safety & Alignment (Guardrails)
+V incorporates strict safety guardrails. Pre-execution simulation ensures that any command or API request sent by V is validated against an ethical and operational safety matrix to prevent destructive actions.
+
+### 24. Continuous Learning & Self-Improvement
+Agent V doesn't just execute tasks; it learns from them. Using feedback loops and reinforcement learning (RLHF), the system analyzes past failures and optimizes future reasoning pathways.
+
+### 25. Data Ingestion Pipelines
+Built-in webhooks, crawlers, and RSS parsers allow V to continuously ingest live data streams, ensuring it is always aware of the latest news, code updates, and metrics relevant to you.
+
+### 26. Supported LLM Models
+V is model-agnostic. It seamlessly integrates with advanced frontier models (Gemini, OpenAI, Anthropic) as well as locally hosted open-source models (Llama 3, Mistral) via Ollama and vLLM.
+
+### 27. Cross-Platform Compatibility
+Whether you are on Windows, macOS, or Linux, Agent V runs natively. The core engine is containerized to guarantee zero dependency hell across different operating systems.
+
+### 28. Docker & Containerization
+Deploying V to the cloud is a breeze. A standardized `Dockerfile` and `docker-compose.yml` allow you to spin up the entire brain, UI, and vector databases with a single command.
+
+### 29. Voice Cloning & Custom Persona
+V isn't restricted to generic robot voices. It supports custom TTS voice cloning, allowing you to give the AI a personalized, highly realistic persona tailored to your workflow.
+
+### 30. Emotion & Sentiment Analysis
+V can analyze the sentiment of your text or voice input. If you're stressed or in a rush, V adjusts its responses to be concise and highly actionable.
+
+### 31. Automated Error Recovery & Self-Healing
+If a sub-agent encounters an exception or an API goes down, V's supervisor agent automatically detects the failure, rewrites the request, or switches to a fallback service seamlessly.
+
+### 32. Rate Limiting & Throttling
+To avoid burning through API credits, V features intelligent global rate limiters, token budget tracking, and smart queuing for non-urgent background tasks.
+
+### 33. Advanced Vector Databases
+Memory relies on scalable vector similarity search. Integrations with ChromaDB, Pinecone, and Qdrant allow V to remember conversations and parse gigabytes of documentation in milliseconds.
+
+### 34. Telemetry & Analytics Logging
+For power users and enterprise deployments, V includes full OpenTelemetry tracing. You can view execution timelines, latency bottlenecks, and token usage on a Grafana dashboard.
+
+### 35. Real-time WebSocket Events
+The orb UI reacts instantly. All actions—like "Thinking," "Executing," and "Listening"—are pushed via WebSockets to the frontend, ensuring zero-latency visual feedback.
+
+### 36. Offline Mode & Local Execution
+Privacy is paramount. You can disconnect from the internet and V will fall back to local LLMs and local STT/TTS models, executing file tasks entirely offline.
+
+### 37. CLI & Headless Usage
+Don't want the 3D UI? V can be run purely in a terminal via a rich CLI mode, perfect for SSH environments, automated CI/CD pipelines, and remote servers.
+
+### 38. Hardware Acceleration (CUDA / MPS)
+The engine automatically detects available hardware. It utilizes NVIDIA CUDA, Apple Metal (MPS), or AMD ROCm to dramatically accelerate neural network processing and local inference.
+
+### 39. Plugins & Extensions Ecosystem
+V supports dynamic hot-loading of plugins. You can write simple Python scripts and drop them into the `plugins/` directory to give V entirely new capabilities without restarting the server.
+
+### 40. Notification & Alert System
+When a long-running background task finishes, V can notify you through various channels, including Discord webhooks, Slack messages, or simple native OS desktop notifications.
+
+### 41. Localization & Multi-language Support
+V is polyglot. The entire pipeline, from speech recognition to LLM generation, fully supports over 50 languages, allowing you to interact in your native tongue.
+
+### 42. Frequently Asked Questions (FAQ)
+- **Is V free?** Yes, the core engine is open-source.
+- **Can I run it on a laptop?** Yes, using local quantized models or cloud APIs.
+- **How is this different from AutoGPT?** V combines an interactive 3D UI, native MCP support, and robust self-healing architecture that standard scripting agents lack.
 
 ---
 <div align="center">
