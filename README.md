@@ -1,5 +1,10 @@
 <div align="center">
-  <img src="./v_3d_logo.png" alt="Agent V 3D Logo" width="300"/>
+  <h2>
+    💖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;💖<br>
+    💖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;💖<br>
+    💖&nbsp;&nbsp;&nbsp;&nbsp;💖<br>
+    💖
+  </h2>
   <h1>🌟 Agent V 🌟</h1>
   <p><strong>Automating the World ("Vishva ko Automate karna")</strong></p>
   <p><em>Built by <a href="https://github.com/Minato95-ayu">Minato95-ayu (Ayush)</a></em></p>
