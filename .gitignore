@@ -1,0 +1,7 @@
+.env
+*.txt
+!requirements.txt
+all_*
+user_msgs.txt
+v_screenshot.png
+v_speech.mp3
