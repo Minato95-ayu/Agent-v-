@@ -15,48 +15,51 @@ Below is an extensive, 20+ topic breakdown of everything you need to know about 
 
 ## 📑 Table of Contents
 
-1. [What Does V Stand For?](#1-what-does-v-stand-for)
-2. [The 3D Vision Logo](#2-the-3d-vision-logo)
-3. [About the Creator](#3-about-the-creator)
-4. [Project Vision & Mission](#4-project-vision--mission)
-5. [System Architecture](#5-system-architecture)
-6. [The Brain & Core Engine](#6-the-brain--core-engine)
-7. [Technologies & Frameworks Used](#7-technologies--frameworks-used)
-8. [Code Structure & Modules](#8-code-structure--modules)
-9. [API Pipeline & Endpoints](#9-api-pipeline--endpoints)
-10. [Model Context Protocol (MCP) Integration](#10-model-context-protocol-mcp-integration)
-11. [Multi-Agent Orchestration](#11-multi-agent-orchestration)
-12. [3D Spatial UI & Orb Interface](#12-3d-spatial-ui--orb-interface)
-13. [Speech & Voice Interfacing](#13-speech--voice-interfacing)
-14. [Roadmap & Future Milestones](#14-roadmap--future-milestones)
-15. [Installation & Setup](#15-installation--setup)
-16. [How to Run (Launcher)](#16-how-to-run-launcher)
-17. [Background Execution (Batch Script)](#17-background-execution-batch-script)
-18. [Memory & Context Management](#18-memory--context-management)
-19. [Performance Optimization](#19-performance-optimization)
-20. [Security & Privacy Measures](#20-security--privacy-measures)
-21. [Contributing Guidelines](#21-contributing-guidelines)
-22. [License & Acknowledgements](#22-license--acknowledgements)
-23. [AI Safety & Alignment (Guardrails)](#23-ai-safety--alignment-guardrails)
-24. [Continuous Learning & Self-Improvement](#24-continuous-learning--self-improvement)
-25. [Data Ingestion Pipelines](#25-data-ingestion-pipelines)
-26. [Supported LLM Models](#26-supported-llm-models)
-27. [Cross-Platform Compatibility](#27-cross-platform-compatibility)
-28. [Docker & Containerization](#28-docker--containerization)
-29. [Voice Cloning & Custom Persona](#29-voice-cloning--custom-persona)
-30. [Emotion & Sentiment Analysis](#30-emotion--sentiment-analysis)
-31. [Automated Error Recovery & Self-Healing](#31-automated-error-recovery--self-healing)
-32. [Rate Limiting & Throttling](#32-rate-limiting--throttling)
-33. [Advanced Vector Databases](#33-advanced-vector-databases)
-34. [Telemetry & Analytics Logging](#34-telemetry--analytics-logging)
-35. [Real-time WebSocket Events](#35-real-time-websocket-events)
-36. [Offline Mode & Local Execution](#36-offline-mode--local-execution)
-37. [CLI & Headless Usage](#37-cli--headless-usage)
-38. [Hardware Acceleration (CUDA / MPS)](#38-hardware-acceleration-cuda--mps)
-39. [Plugins & Extensions Ecosystem](#39-plugins--extensions-ecosystem)
-40. [Notification & Alert System](#40-notification--alert-system)
-41. [Localization & Multi-language Support](#41-localization--multi-language-support)
-42. [Frequently Asked Questions (FAQ)](#42-frequently-asked-questions-faq)
+<div align="center">
+  <a href="#1-what-does-v-stand-for"><img src="https://img.shields.io/badge/1.-What_Does_V_Stand_For%3F-00e5ff?style=for-the-badge" alt="What Does V Stand For?" style="margin: 2px;"></a>
+  <a href="#2-the-3d-vision-logo"><img src="https://img.shields.io/badge/2.-The_3D_Vision_Logo-8a2be2?style=for-the-badge" alt="The 3D Vision Logo" style="margin: 2px;"></a>
+  <a href="#3-about-the-creator"><img src="https://img.shields.io/badge/3.-About_the_Creator-ff007f?style=for-the-badge" alt="About the Creator" style="margin: 2px;"></a>
+  <a href="#4-project-vision--mission"><img src="https://img.shields.io/badge/4.-Project_Vision_%26_Mission-00ff00?style=for-the-badge" alt="Project Vision & Mission" style="margin: 2px;"></a>
+  <a href="#5-system-architecture"><img src="https://img.shields.io/badge/5.-System_Architecture-ffaa00?style=for-the-badge" alt="System Architecture" style="margin: 2px;"></a>
+  <a href="#6-the-brain--core-engine"><img src="https://img.shields.io/badge/6.-The_Brain_%26_Core_Engine-00e5ff?style=for-the-badge" alt="The Brain & Core Engine" style="margin: 2px;"></a>
+  <a href="#7-technologies--frameworks-used"><img src="https://img.shields.io/badge/7.-Technologies_%26_Frameworks_Used-8a2be2?style=for-the-badge" alt="Technologies & Frameworks Used" style="margin: 2px;"></a>
+  <a href="#8-code-structure--modules"><img src="https://img.shields.io/badge/8.-Code_Structure_%26_Modules-ff007f?style=for-the-badge" alt="Code Structure & Modules" style="margin: 2px;"></a>
+  <a href="#9-api-pipeline--endpoints"><img src="https://img.shields.io/badge/9.-API_Pipeline_%26_Endpoints-00ff00?style=for-the-badge" alt="API Pipeline & Endpoints" style="margin: 2px;"></a>
+  <a href="#10-model-context-protocol-mcp-integration"><img src="https://img.shields.io/badge/10.-Model_Context_Protocol_%28MCP%29_Integration-ffaa00?style=for-the-badge" alt="Model Context Protocol (MCP) Integration" style="margin: 2px;"></a>
+  <a href="#11-multi-agent-orchestration"><img src="https://img.shields.io/badge/11.-Multi--Agent_Orchestration-00e5ff?style=for-the-badge" alt="Multi-Agent Orchestration" style="margin: 2px;"></a>
+  <a href="#12-3d-spatial-ui--orb-interface"><img src="https://img.shields.io/badge/12.-3D_Spatial_UI_%26_Orb_Interface-8a2be2?style=for-the-badge" alt="3D Spatial UI & Orb Interface" style="margin: 2px;"></a>
+  <a href="#13-speech--voice-interfacing"><img src="https://img.shields.io/badge/13.-Speech_%26_Voice_Interfacing-ff007f?style=for-the-badge" alt="Speech & Voice Interfacing" style="margin: 2px;"></a>
+  <a href="#14-roadmap--future-milestones"><img src="https://img.shields.io/badge/14.-Roadmap_%26_Future_Milestones-00ff00?style=for-the-badge" alt="Roadmap & Future Milestones" style="margin: 2px;"></a>
+  <a href="#15-installation--setup"><img src="https://img.shields.io/badge/15.-Installation_%26_Setup-ffaa00?style=for-the-badge" alt="Installation & Setup" style="margin: 2px;"></a>
+  <a href="#16-how-to-run-launcher"><img src="https://img.shields.io/badge/16.-How_to_Run_%28Launcher%29-00e5ff?style=for-the-badge" alt="How to Run (Launcher)" style="margin: 2px;"></a>
+  <a href="#17-background-execution-batch-script"><img src="https://img.shields.io/badge/17.-Background_Execution_%28Batch_Script%29-8a2be2?style=for-the-badge" alt="Background Execution (Batch Script)" style="margin: 2px;"></a>
+  <a href="#18-memory--context-management"><img src="https://img.shields.io/badge/18.-Memory_%26_Context_Management-ff007f?style=for-the-badge" alt="Memory & Context Management" style="margin: 2px;"></a>
+  <a href="#19-performance-optimization"><img src="https://img.shields.io/badge/19.-Performance_Optimization-00ff00?style=for-the-badge" alt="Performance Optimization" style="margin: 2px;"></a>
+  <a href="#20-security--privacy-measures"><img src="https://img.shields.io/badge/20.-Security_%26_Privacy_Measures-ffaa00?style=for-the-badge" alt="Security & Privacy Measures" style="margin: 2px;"></a>
+  <a href="#21-contributing-guidelines"><img src="https://img.shields.io/badge/21.-Contributing_Guidelines-00e5ff?style=for-the-badge" alt="Contributing Guidelines" style="margin: 2px;"></a>
+  <a href="#22-license--acknowledgements"><img src="https://img.shields.io/badge/22.-License_%26_Acknowledgements-8a2be2?style=for-the-badge" alt="License & Acknowledgements" style="margin: 2px;"></a>
+  <a href="#23-ai-safety--alignment-guardrails"><img src="https://img.shields.io/badge/23.-AI_Safety_%26_Alignment_%28Guardrails%29-ff007f?style=for-the-badge" alt="AI Safety & Alignment (Guardrails)" style="margin: 2px;"></a>
+  <a href="#24-continuous-learning--self-improvement"><img src="https://img.shields.io/badge/24.-Continuous_Learning_%26_Self--Improvement-00ff00?style=for-the-badge" alt="Continuous Learning & Self-Improvement" style="margin: 2px;"></a>
+  <a href="#25-data-ingestion-pipelines"><img src="https://img.shields.io/badge/25.-Data_Ingestion_Pipelines-ffaa00?style=for-the-badge" alt="Data Ingestion Pipelines" style="margin: 2px;"></a>
+  <a href="#26-supported-llm-models"><img src="https://img.shields.io/badge/26.-Supported_LLM_Models-00e5ff?style=for-the-badge" alt="Supported LLM Models" style="margin: 2px;"></a>
+  <a href="#27-cross-platform-compatibility"><img src="https://img.shields.io/badge/27.-Cross--Platform_Compatibility-8a2be2?style=for-the-badge" alt="Cross-Platform Compatibility" style="margin: 2px;"></a>
+  <a href="#28-docker--containerization"><img src="https://img.shields.io/badge/28.-Docker_%26_Containerization-ff007f?style=for-the-badge" alt="Docker & Containerization" style="margin: 2px;"></a>
+  <a href="#29-voice-cloning--custom-persona"><img src="https://img.shields.io/badge/29.-Voice_Cloning_%26_Custom_Persona-00ff00?style=for-the-badge" alt="Voice Cloning & Custom Persona" style="margin: 2px;"></a>
+  <a href="#30-emotion--sentiment-analysis"><img src="https://img.shields.io/badge/30.-Emotion_%26_Sentiment_Analysis-ffaa00?style=for-the-badge" alt="Emotion & Sentiment Analysis" style="margin: 2px;"></a>
+  <a href="#31-automated-error-recovery--self-healing"><img src="https://img.shields.io/badge/31.-Automated_Error_Recovery_%26_Self--Healing-00e5ff?style=for-the-badge" alt="Automated Error Recovery & Self-Healing" style="margin: 2px;"></a>
+  <a href="#32-rate-limiting--throttling"><img src="https://img.shields.io/badge/32.-Rate_Limiting_%26_Throttling-8a2be2?style=for-the-badge" alt="Rate Limiting & Throttling" style="margin: 2px;"></a>
+  <a href="#33-advanced-vector-databases"><img src="https://img.shields.io/badge/33.-Advanced_Vector_Databases-ff007f?style=for-the-badge" alt="Advanced Vector Databases" style="margin: 2px;"></a>
+  <a href="#34-telemetry--analytics-logging"><img src="https://img.shields.io/badge/34.-Telemetry_%26_Analytics_Logging-00ff00?style=for-the-badge" alt="Telemetry & Analytics Logging" style="margin: 2px;"></a>
+  <a href="#35-real-time-websocket-events"><img src="https://img.shields.io/badge/35.-Real--time_WebSocket_Events-ffaa00?style=for-the-badge" alt="Real-time WebSocket Events" style="margin: 2px;"></a>
+  <a href="#36-offline-mode--local-execution"><img src="https://img.shields.io/badge/36.-Offline_Mode_%26_Local_Execution-00e5ff?style=for-the-badge" alt="Offline Mode & Local Execution" style="margin: 2px;"></a>
+  <a href="#37-cli--headless-usage"><img src="https://img.shields.io/badge/37.-CLI_%26_Headless_Usage-8a2be2?style=for-the-badge" alt="CLI & Headless Usage" style="margin: 2px;"></a>
+  <a href="#38-hardware-acceleration-cuda--mps"><img src="https://img.shields.io/badge/38.-Hardware_Acceleration_%28CUDA_/_MPS%29-ff007f?style=for-the-badge" alt="Hardware Acceleration (CUDA / MPS)" style="margin: 2px;"></a>
+  <a href="#39-plugins--extensions-ecosystem"><img src="https://img.shields.io/badge/39.-Plugins_%26_Extensions_Ecosystem-00ff00?style=for-the-badge" alt="Plugins & Extensions Ecosystem" style="margin: 2px;"></a>
+  <a href="#40-notification--alert-system"><img src="https://img.shields.io/badge/40.-Notification_%26_Alert_System-ffaa00?style=for-the-badge" alt="Notification & Alert System" style="margin: 2px;"></a>
+  <a href="#41-localization--multi-language-support"><img src="https://img.shields.io/badge/41.-Localization_%26_Multi--language_Support-00e5ff?style=for-the-badge" alt="Localization & Multi-language Support" style="margin: 2px;"></a>
+  <a href="#42-frequently-asked-questions-faq"><img src="https://img.shields.io/badge/42.-Frequently_Asked_Questions_%28FAQ%29-8a2be2?style=for-the-badge" alt="Frequently Asked Questions (FAQ)" style="margin: 2px;"></a>
+</div>
+
 
 ---
 
