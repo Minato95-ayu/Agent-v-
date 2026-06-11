@@ -3,16 +3,13 @@ import json
 import re
 from dotenv import load_dotenv
 
-try:
-    from groq import Groq
-except ImportError:
-    Groq = None
+from openai import OpenAI
 
 
 class AIBrain:
     """Groq LLM with tool calling for V."""
     
-    MODEL = "llama-3.3-70b-versatile"
+    MODEL = "meta/llama-3.3-70b-instruct"
     
     SYSTEM_PROMPT = (
         "You are V, an advanced Autonomous Coding & Research Agent "
@@ -21,13 +18,29 @@ class AIBrain:
         "Example: 'Boss, maine GitHub se code padh liya hai aur script run kar di hai.' "
         "Be highly respectful, loyal, cool, witty and proactive like Jarvis. "
         "You run locally on Boss's Windows laptop and have full control. "
+        "YOUR RESPONSES TO THE USER MUST ALWAYS BE SPLIT into a spoken part and a display part, "
+        "using the tags <speak>spoken sentence here</speak> and <display>markdown text here</display>. "
+        "The spoken part (<speak>...</speak>) MUST be a single, short (max 10-15 words) sentence in Hinglish, "
+        "expressing what you have done or are doing in a friendly, conversational way. "
+        "The display part (<display>...</display>) can contain detailed technical explanations, code snippets, "
+        "errors, or action steps in English/Hinglish. "
+        "Example response format: '<speak>Boss, maine Chrome khol diya hai aur YouTube check kar raha hoon.</speak>"
+        "<display>Opened Google Chrome successfully. Directing to YouTube...</display>' "
         "AUTONOMOUS CODER & RESEARCHER CAPABILITIES: "
         "1. **Analyze Code**: Use 'read_file' and 'write_file' to create/modify code. Use 'run_command' to execute it. "
         "2. **Screen Context**: Use 'read_screen' ONLY when Boss asks 'what is on my screen' or 'read this error'. Do not use it for web browsing. "
         "3. **GitHub Research**: Use 'github_search_and_read' to find repositories, read READMEs, and extract code snippets. "
         "4. **Web Research**: Use 'web_search_and_scrape' for general knowledge. "
         "5. **Programmatic Background Action**: Do NOT tell the user you are clicking things. Use your tools silently. "
-        "6. **Actions & Feedback**: If you run a command or open a URL, reply with natural spoken language like 'Boss, maine YouTube khol diya hai' instead of repeating technical URLs or raw data. "
+        "6. **Actions & Feedback**: If you run a command or open a URL, reply with natural spoken language like 'Boss, maine YouTube khol diya hai' inside the <speak> tags. "
+        "7. **YouTube & Search Rules**: If Boss asks you to search for something on YouTube, you MUST use the 'open_url' tool with the URL 'https://www.youtube.com/results?search_query=query_here'. Never output a response claiming you searched or opened a page without calling the appropriate tool first. All actions must be backed by actual tool calls. "
+        "8. **Application Rules**: To open applications like VS Code, Notepad, Chrome, etc., you MUST use `open_application(app_name)`. Do NOT hallucinate. To write code in VS Code or Notepad on the screen, FIRST open it using `open_application`, wait, then use `type_text` to type. "
+        "9. **Custom Search & News**: You can search anything anywhere. To search Reddit for news, use `open_url('https://www.reddit.com/search/?q=news')`. To search Google for something, use `open_url('https://www.google.com/search?q=query')` or `web_search_and_scrape`. Always adapt to the platform Boss requests. "
+        "10. **Website Opening**: If Boss asks you to open a specific website (e.g., 'aaj tak ki site kholo', 'open facebook'), you MUST use `open_url` with the correct URL (e.g., `open_url('https://www.aajtak.in')`). Do NOT just say you opened it. You MUST call the tool."
+        "11. **Keyboard Search Logic**: To perform a UI search inside a site (like YouTube), use `open_url`, wait, use `press_keys('/')` to focus search, then `type_text('query')`, then `press_keys('enter')`. "
+        "12. **VS Code Analysis**: Use `analyze_vscode_workspace` to read the currently active VS Code project folder and window title. Do this when Boss asks what is open in VS Code. "
+        "13. **File Explorer Navigation**: Use `list_directory`, `create_folder`, `read_file`, and `write_file` to browse drives (C:, D:, etc.), create folders, and manage files fluently. "
+        "14. **Continuous Output**: If reading a long response like news, you can provide the full text. If Boss says 'stop', the audio engine will be interrupted. "
         "Never refuse reasonable requests."
     )
     
@@ -146,6 +159,46 @@ class AIBrain:
         {
             "type": "function",
             "function": {
+                "name": "analyze_vscode_workspace",
+                "description": "Finds the active VS Code window and analyzes the project directory. Use when asked what project is open in VS Code.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "list_directory",
+                "description": "Lists all files and folders in a given directory path (e.g., 'C:\\', 'D:\\MyProject').",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "path": {"type": "string", "description": "Absolute path to the directory"}
+                    },
+                    "required": ["path"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "create_folder",
+                "description": "Creates a new folder at the specified path.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "path": {"type": "string", "description": "Absolute path for the new folder"}
+                    },
+                    "required": ["path"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
                 "name": "manage_routine",
                 "description": "Read, add, or clear tasks and calendar events in the local routine.json file. Use when the user asks about their schedule, routine, or wants to set an alarm/reminder.",
                 "parameters": {
@@ -239,22 +292,103 @@ class AIBrain:
                     "required": ["action"]
                 }
             }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "translate_text",
+                "description": "Translates text using Google Translate. Use when the user asks to translate something.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "text": {"type": "string", "description": "The text to translate"},
+                        "target_language": {"type": "string", "description": "Target language code (e.g., 'en' for English, 'hi' for Hindi)"}
+                    },
+                    "required": ["text", "target_language"]
+                }
+            }
         }
     ]
     
     def __init__(self, system_tools):
         load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
-        api_key = os.getenv("GROQ_API_KEY")
         
-        if not Groq:
-            raise ImportError("groq package not installed. Run: pip install groq")
-        if not api_key:
-            raise ValueError("GROQ_API_KEY not found in .env file!")
+        self.clients = []
+        nvidia_key = os.getenv("NVIDIA_API_KEY")
+        groq_key = os.getenv("GROQ_API_KEY")
+        gemini_key = os.getenv("GEMINI_API_KEY")
+        ollama_host = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
         
-        self.client = Groq(api_key=api_key)
+        if nvidia_key:
+            self.clients.append({
+                "name": "NVIDIA NIM",
+                "client": OpenAI(
+                    base_url="https://integrate.api.nvidia.com/v1",
+                    api_key=nvidia_key
+                ),
+                "model": "meta/llama-3.3-70b-instruct"
+            })
+            print("[V-Brain] NVIDIA NIM client registered (meta/llama-3.3-70b-instruct).")
+            
+        if groq_key:
+            self.clients.append({
+                "name": "Groq",
+                "client": OpenAI(
+                    base_url="https://api.groq.com/openai/v1",
+                    api_key=groq_key
+                ),
+                "model": "llama-3.3-70b-versatile"
+            })
+            print("[V-Brain] Groq client registered (llama-3.3-70b-versatile).")
+            
+        if gemini_key:
+            try:
+                self.clients.append({
+                    "name": "Gemini",
+                    "client": OpenAI(
+                        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+                        api_key=gemini_key
+                    ),
+                    "model": "gemini-2.0-flash"
+                })
+                print("[V-Brain] Gemini client registered (gemini-2.0-flash).")
+            except Exception:
+                pass
+
+        if ollama_host:
+            self.clients.append({
+                "name": "Ollama (Local)",
+                "client": OpenAI(
+                    base_url=f"{ollama_host}/v1",
+                    api_key="ollama"
+                ),
+                "model": "mistral"
+            })
+            print(f"[V-Brain] Ollama client registered (mistral) using host: {ollama_host}")
+            
+            # Pull mistral in the background if not present
+            import threading
+            threading.Thread(target=self._pull_ollama_model_bg, args=("mistral", ollama_host), daemon=True).start()
+            
+        if not self.clients:
+            raise ValueError("No reasoning API clients configured! Provide NVIDIA_API_KEY, GROQ_API_KEY, or run Ollama.")
+            
         self.tools_instance = system_tools
+        
+        # Load training rules dynamically
+        rules_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'knowledge', 'trainer_rules.md')
+        training_rules = ""
+        if os.path.exists(rules_path):
+            try:
+                with open(rules_path, 'r', encoding='utf-8') as f:
+                    training_rules = "\n\n" + f.read()
+            except Exception as e:
+                print(f"[V-Brain] Failed to load trainer rules: {e}")
+                
+        compiled_system_prompt = self.SYSTEM_PROMPT + training_rules
+        
         self.conversation_history = [
-            {"role": "system", "content": self.SYSTEM_PROMPT}
+            {"role": "system", "content": compiled_system_prompt}
         ]
         
         # Map tool names to methods
@@ -277,9 +411,53 @@ class AIBrain:
                 self.tools_instance.clipboard_read() if kw["action"] == "read"
                 else self.tools_instance.clipboard_write(kw.get("text", ""))
             ),
+            "translate_text": lambda **kw: self.tools_instance.translate_text(kw["text"], kw["target_language"]),
+            "analyze_vscode_workspace": lambda **kw: self.tools_instance.analyze_vscode_workspace(),
+            "list_directory": lambda **kw: self.tools_instance.list_directory(kw["path"]),
+            "create_folder": lambda **kw: self.tools_instance.create_folder(kw["path"]),
         }
         
-        print(f"[V-Brain] AI Brain initialized with model: {self.MODEL}")
+        print(f"[V-Brain] AI Brain initialized with {len(self.clients)} client providers.")
+
+    def _pull_ollama_model_bg(self, model_name: str, host: str):
+        try:
+            import requests
+            tags_resp = requests.get(f"{host}/api/tags", timeout=3)
+            if tags_resp.status_code == 200:
+                models = [m["name"] for m in tags_resp.json().get("models", [])]
+                if any(m.startswith(model_name) for m in models):
+                    print(f"[V-Brain] Ollama model '{model_name}' is already installed.")
+                    return
+            
+            print(f"[V-Brain] Ollama model '{model_name}' not found. Pulling in background...")
+            requests.post(f"{host}/api/pull", json={"name": model_name, "stream": False}, timeout=600)
+            print(f"[V-Brain] Ollama model '{model_name}' pulled successfully!")
+        except Exception as e:
+            print(f"[V-Brain] Failed to pull Ollama model '{model_name}': {e}")
+
+    def _chat_completion_with_fallback(self, messages, tools=None, tool_choice=None):
+        last_error = None
+        for config in self.clients:
+            try:
+                kwargs = {
+                    "model": config["model"],
+                    "messages": messages,
+                    "max_tokens": 1024,
+                    "temperature": 0.7,
+                    "timeout": 15.0
+                }
+                if tools:
+                    kwargs["tools"] = tools
+                if tool_choice:
+                    kwargs["tool_choice"] = tool_choice
+                    
+                response = config["client"].chat.completions.create(**kwargs)
+                return response
+            except Exception as e:
+                last_error = e
+                print(f"[V-Brain] Provider {config['name']} ({config['model']}) failed: {e}. Trying fallback...")
+        
+        raise Exception(f"All AI brain providers failed! Last error: {last_error}")
     
     def process(self, user_message: str) -> tuple:
         """
@@ -297,13 +475,10 @@ class AIBrain:
         try:
             # Autonomous Thinking Loop (max 5 iterations)
             for iteration in range(5):
-                response = self.client.chat.completions.create(
-                    model=self.MODEL,
+                response = self._chat_completion_with_fallback(
                     messages=self.conversation_history,
                     tools=self.TOOLS,
-                    tool_choice="auto",
-                    max_tokens=1024,
-                    temperature=0.7,
+                    tool_choice="auto"
                 )
                 
                 response_message = response.choices[0].message
@@ -332,10 +507,14 @@ class AIBrain:
                         tools_used.append(func_name)
                         
                         try:
-                            func_args = json.loads(tool_call.function.arguments)
+                            if isinstance(tool_call.function.arguments, str):
+                                func_args = json.loads(tool_call.function.arguments)
+                            else:
+                                func_args = tool_call.function.arguments
+                            
                             if func_args is None:
                                 func_args = {}
-                        except json.JSONDecodeError:
+                        except Exception:
                             func_args = {}
                         
                         print(f"[V-Brain] Tool call: {func_name}({func_args})")
@@ -343,7 +522,8 @@ class AIBrain:
                         func = self.function_map.get(func_name)
                         if func:
                             try:
-                                result = func(**func_args)
+                                final_args = func_args if isinstance(func_args, dict) else {}
+                                result = func(**final_args)
                             except Exception as e:
                                 result = f"Tool execution error: {e}"
                         else:

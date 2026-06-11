@@ -9,6 +9,7 @@ import sys
 import queue
 import threading
 from contextlib import asynccontextmanager
+import re
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
@@ -71,10 +72,26 @@ async def process_transcript(text: str):
                 await broadcast("executing", f"Running: {tool_names}")
                 await asyncio.sleep(0.5)
             
+            # Parse speak and display tags
+            speak_match = re.search(r"<speak>(.*?)</speak>", response_text, re.DOTALL)
+            display_match = re.search(r"<display>(.*?)</display>", response_text, re.DOTALL)
+            
+            if speak_match:
+                spoken_text = speak_match.group(1).strip()
+            else:
+                clean_text = re.sub(r"<[^>]+>", "", response_text).strip()
+                # Default to first sentence or a limited snippet
+                spoken_text = clean_text.split(".")[0] + "."
+                
+            if display_match:
+                display_text = display_match.group(1).strip()
+            else:
+                display_text = re.sub(r"<[^>]+>", "", response_text).strip()
+            
             # Phase 4: Speaking
-            print(f"[V-Voice] Speaking: {response_text}")
-            await broadcast("speaking", response_text[:100])
-            await voice.speak(response_text)
+            print(f"[V-Voice] Speaking: {spoken_text}")
+            await broadcast("speaking", display_text[:100])
+            await voice.speak(spoken_text)
             
             # Phase 5: Back to idle
             await broadcast("idle", "Ready for next command, Boss...")
@@ -197,11 +214,23 @@ async def rest_process(request_data: dict):
     try:
         response_text, tools_used = brain.process(message)
         
+        # Parse speak and display tags
+        speak_match = re.search(r"<speak>(.*?)</speak>", response_text, re.DOTALL)
+        display_match = re.search(r"<display>(.*?)</display>", response_text, re.DOTALL)
+        
+        if speak_match:
+            spoken_text = speak_match.group(1).strip()
+        else:
+            clean_text = re.sub(r"<[^>]+>", "", response_text).strip()
+            spoken_text = clean_text.split(".")[0] + "."
+            
+        clean_response = display_match.group(1).strip() if display_match else re.sub(r"<[^>]+>", "", response_text).strip()
+        
         # If from voice source, also speak
         if source == "voice" and voice:
-            await voice.speak(response_text)
+            await voice.speak(spoken_text)
         
-        return {"status": "success", "response": response_text, "tools_used": tools_used}
+        return {"status": "success", "response": clean_response, "tools_used": tools_used}
     except Exception as e:
         return {"status": "error", "response": f"Error: {str(e)}"}
 

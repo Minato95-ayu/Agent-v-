@@ -60,7 +60,7 @@ const STATES = {
     deep: new THREE.Color('#CC1A00'),
     rotationSpeed: 0.001,
     noiseScale: 2.0,
-    bloomBase: 1.5
+    bloomBase: 0.5
   },
   listening: {
     core: new THREE.Color('#FFD700'),
@@ -68,7 +68,7 @@ const STATES = {
     deep: new THREE.Color('#FF8C00'),
     rotationSpeed: 0.002,
     noiseScale: 2.2,
-    bloomBase: 1.8
+    bloomBase: 0.8
   },
   thinking: {
     core: new THREE.Color('#9B59B6'),
@@ -76,7 +76,7 @@ const STATES = {
     deep: new THREE.Color('#6C3483'),
     rotationSpeed: 0.005,
     noiseScale: 3.0,
-    bloomBase: 1.6
+    bloomBase: 0.6
   },
   speaking: {
     core: new THREE.Color('#FF4500'),
@@ -84,7 +84,7 @@ const STATES = {
     deep: new THREE.Color('#CC0000'),
     rotationSpeed: 0.003,
     noiseScale: 2.5,
-    bloomBase: 2.0
+    bloomBase: 1.0
   },
   executing: {
     core: new THREE.Color('#00CED1'),
@@ -92,7 +92,7 @@ const STATES = {
     deep: new THREE.Color('#008B8B'),
     rotationSpeed: 0.004,
     noiseScale: 2.8,
-    bloomBase: 1.7
+    bloomBase: 0.7
   }
 };
 
@@ -112,8 +112,8 @@ let rotationSpeed = 0.001;
 let targetRotationSpeed = 0.001;
 let currentNoiseScale = 2.0;
 let targetNoiseScale = 2.0;
-let currentBloomBase = 1.5;
-let targetBloomBase = 1.5;
+let currentBloomBase = 0.5;
+let targetBloomBase = 0.5;
 
 const currentCore = new THREE.Color('#FF9A1A');
 const currentEdge = new THREE.Color('#FFE680');
@@ -142,7 +142,7 @@ const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  1.5, 0.4, 0.1
+  0.5, 0.4, 0.1
 );
 composer.addPass(bloomPass);
 
@@ -234,7 +234,7 @@ void main(){
   vec3 baseColor = mix(uColorDeep, uColorCore, vNoise * 0.5 + 0.5);
   vec3 finalColor = mix(baseColor, uColorEdge, fresnel);
 
-  float intensity = 1.5 + uAmplitude * 2.0 + fresnel * 1.5;
+  float intensity = 1.0 + uAmplitude * 1.0 + fresnel * 0.8;
   finalColor *= intensity;
 
   gl_FragColor = vec4(finalColor, 1.0);
